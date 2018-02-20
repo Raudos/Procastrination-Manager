@@ -1,0 +1,54 @@
+{
+  "name": "timemanager",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native run-android",
+    "release": "cd android && ./gradlew assembleRelease",
+    "clear": "rm -rf $TMPDIR/react-* && rm -rf android/.gradle && npm cache clean --force",
+    "purge": "rm -rf $TMPDIR/react-* && rm -rf android/.gradle && npm cache clean --force && rm -rf node_modules/ && npm i",
+    "clear_watchman": "watchman watch-del-all",
+    "debug_watchman": "echo 999999 | sudo tee -a /proc/sys/fs/inotify/max_user_watches && echo 999999 | sudo tee -a /proc/sys/fs/inotify/max_queued_events && echo 999999 | sudo tee -a /proc/sys/fs/inotify/max_user_instances && watchman shutdown-server",
+    "begin": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "i18next": "^10.2.2",
+    "lodash": "^4.17.4",
+    "prop-types": "^15.6.0",
+    "ramda": "^0.25.0",
+    "react": "16.0.0",
+    "react-data-container": "git+https://github.com/Raudos/ReactDataContainer.git",
+    "react-i18next": "^7.3.0",
+    "react-native": "0.51.0",
+    "react-native-calendars": "^1.17.0",
+    "react-native-color-picker": "^0.4.0",
+    "react-native-elements": "^0.18.5",
+    "react-native-gesture-handler": "^1.0.0-alpha.40",
+    "react-native-round-flags": "^1.0.4",
+    "react-native-splash-screen": "^3.0.6",
+    "react-native-svg": "^6.1.3",
+    "react-native-svg-charts": "git+https://github.com/Raudos/react-native-svg-charts.git",
+    "react-native-tab-view": "0.0.74",
+    "react-native-vector-icons": "^4.4.3",
+    "react-native-wheel-picker-android": "^1.0.3",
+    "react-navigation": "^1.0.3",
+    "react-navigation-redux-helpers": "^1.0.1",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
+    "shortid": "^2.2.8"
+  },
+  "devDependencies": {
+    "babel-jest": "22.0.4",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-react-native": "4.0.0",
+    "eslint": "^4.18.0",
+    "jest": "22.0.4",
+    "react-test-renderer": "16.0.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
