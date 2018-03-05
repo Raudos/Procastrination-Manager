@@ -26,7 +26,7 @@ ES6, Thunks, Decorators, SVGs
 * Minimal usage of animations and transitions.
 * Overreliance on AsyncStore and single JSON file.
 
-## TODO's and Buggs
+## TODO's and Bugs
 
 * Tooltips, texts.
 * Addition of Bugsnag or any other error tracking tool.

@@ -82,13 +82,13 @@ const Navigator = StackNavigator({
 })
 class NavigatorWithTranslate extends React.Component {
   static propTypes = {
-    asdf: PropTypes.isRequired,
     options: PropTypes.object.isRequired,
     mode: PropTypes.string.isRequired,
     navigation: PropTypes.object.isRequired,
     navigate: PropTypes.func.isRequired,
     t: PropTypes.func.isRequired
   };
+  
   componentDidMount() {
     i18n.changeLanguage(this.props.options.lang);
     SplashScreen.hide();

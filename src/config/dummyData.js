@@ -199,7 +199,7 @@ function createTimestamps() {
   const today = Math.round(new Date().getTime() / 1000);
   const timestamps = [];
   const day = 24 * 60 * 60;
-;
+
   for (let i = 0; i < 10; i ++) {
     let randomEnd = Math.floor(Math.random() * 3000);
     let randomStart = Math.floor(Math.random() * 100);
@@ -228,13 +228,13 @@ function seedRest(timers, dataArr, key) {
       ...obj,
       timers: timers.map(timer => {
         if (timer[key].includes(obj.id)) {
-          return timer.id
+          return timer.id;
         }
 
         return null;
       }).filter(id => id)
-    }
-  })
+    };
+  });
 };
 
 const transformedTimers = seedTimers();
