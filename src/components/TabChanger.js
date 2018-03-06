@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+import { View, StyleSheet, Dimensions, Text } from 'react-native';
+import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import PropTypes from 'prop-types';
+
+// components
+import LoaderComponent from "src/components/Loader/index";
 
 // Other
 import { colorPrimary, colorSecondary, backgroundColor, accentColor } from 'src/config/styles';
@@ -27,33 +30,40 @@ export default class TabViewExample extends React.Component {
 
   handleIndexChange = index => this.setState({ index });
 
-  renderHeader = props => (
-    <TabBar
-      {...props}
-      indicatorStyle={{
-        backgroundColor,
-        height: 4,
-        bottom: 0,
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10
-      }}
-      style={{
-        backgroundColor: colorPrimary,
-        borderBottomColor: backgroundColor,
-        borderBottomWidth: 1
-      }}
-      labelStyle={{
-        margin: 4,
-        fontSize: 18,
-        color: backgroundColor
-      }}
-    />
-  );
+  renderHeader = props => {
+    return (
+      <TabBar
+        {...props}
+        scrollEnabled={this.props.scrollEnabled}
+        indicatorStyle={{
+          backgroundColor,
+          height: 4,
+          bottom: 0,
+          borderTopRightRadius: 10,
+          borderTopLeftRadius: 10
+        }}
+        style={{
+          backgroundColor: colorPrimary,
+          borderBottomColor: backgroundColor,
+          borderBottomWidth: 1
+        }}
+        labelStyle={{
+          margin: 4,
+          fontSize: 18,
+          color: backgroundColor
+        }}
+      />
+    )
+  }
 
-  renderScene = ({ route, index }) => {
-    const PickedComponent = this.props.components[route.key] || null;
+  renderScene = ({ layout, route }) => {
+    if (layout.measured) {
+      const PickedComponent = this.props.components[route.key] || null;
 
-    return <PickedComponent {...this.props} activeTab={route.key} currentComponent={this.props.tabs[this.state.index].key} />
+      return <PickedComponent {...this.props} activeTab={route.key} currentComponent={this.props.tabs[this.state.index].key} />
+    }
+
+    return <LoaderComponent loadingText="Loading"/>;
   };
 
   render() {

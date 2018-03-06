@@ -27,10 +27,7 @@ const Start = props => {
 
               <Text style={{fontSize: 25}}>{t("start.welcome")}</Text>
 
-              <View style={{flexDirection: "row", alignItems: "center"}}>
-                <Text style={{fontSize: 15}}>{`${t('start.in')} `}</Text>
-                <Text style={{fontSize: 15, fontWeight: "bold"}}>Procastrination Manager</Text>
-              </View>
+              <Text style={{fontSize: 15}}>{`${t('start.in')} `}<Text style={{fontSize: 15, fontWeight: "bold"}}>Procastrination Manager</Text></Text>
 
               <Text style={{marginTop: 5, paddingTop: 5, borderTopWidth: 0.5, borderTopColor: colorPrimary, paddingHorizontal: 10}}>
                 {t("start.introduction")}

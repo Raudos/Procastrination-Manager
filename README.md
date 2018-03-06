@@ -30,8 +30,8 @@ ES6, Thunks, Decorators, SVGs
 
 * Tooltips, texts.
 * Addition of Bugsnag or any other error tracking tool.
-* Further development of Statistics section.
+* <del>Further development of Statistics section.</del>
 * Better error handling.
 * Additional animations, especially during the route transitions.
-* Fixes of unnecessary rerendering cases.
+* <del>Fixes of unnecessary rerendering cases.</del>
 * Unnecessary code repetitions, especially those used in filtering and sorting.

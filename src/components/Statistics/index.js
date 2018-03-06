@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 // Components
 import Container from "src/components/Container";
@@ -12,7 +13,60 @@ import Tooltip from "src/components/Creator/Tooltip";
 
 // Other
 import { colorPrimary, colorSecondary, backgroundColor } from 'src/config/styles';
-import getRandomColor from "src/reusables/randomColor";
+import { parseTimestamp } from "src/reusables/time";
+
+function filterTimers(timers = [], option = "All") {
+  const filters = {
+    Week: timestamp => {
+      const momentTimestamp = moment(parseTimestamp(timestamp.start, "agendaFormat"));
+
+      return !moment().subtract(7, 'days').isAfter(momentTimestamp);
+    },
+    Month: timestamp => {
+      const momentTimestamp = moment(parseTimestamp(timestamp.start, "agendaFormat"));
+
+      return !moment().subtract(1, "month").isAfter(momentTimestamp);
+    }
+  };
+
+  if (option === "All") {
+    return timers;
+  } else {
+    return timers.filter(filters[option]);
+  }
+};
+
+function prepareTimers(props) {
+  if (props.data.timers && props.data.timers.length) {
+    const timers = props.data.timers.map(timer => {
+      if (timer.timestamps && timer.timestamps.length) {
+        return {
+          ...timer,
+          ...filterTimers(timer.timestamps, props.activeTab).reduce((prev, curr) => {
+            return {
+              activitiesDuration: prev.activitiesDuration + (curr.end - curr.start),
+              breaksDuration: prev.breaksDuration + (curr.usedBreaks.length ? curr.usedBreaks.reduce((prev, curr) => prev + (curr.end - curr.start), 0) : 0)
+            };
+          }, {
+            activitiesDuration: 0,
+            breaksDuration: 0
+          })
+        };
+      }
+
+      return {
+        ...timer,
+        activitiesDuration: 0,
+        breaksDuration: 0
+      };
+    });
+
+    return timers;
+  }
+
+  return [];
+};
+
 
 function showStatistics(timers) {
   for (let i = 0; i < timers.length; i++) {
@@ -25,55 +79,28 @@ function showStatistics(timers) {
 };
 
 const Statistics = props => {
-  if (showStatistics(props.data.timers)) {
-    const data = props.data.timers.map(timer => {
-      if (timer.timestamps && timer.timestamps.length) {
-        return {
-          ...timer,
-          ...timer.timestamps.reduce((prev, curr) => {
-            return {
-              activitiesDuration: prev.activitiesDuration + (curr.end - curr.start),
-              breaksDuration: prev.breaksDuration + (curr.usedBreaks.length ? curr.usedBreaks.reduce((prev, curr) => prev + (curr.end - curr.start), 0) : 0)
-            };
-          }, {
-            activitiesDuration: 0,
-            breaksDuration: 0
-          }),
-          color: getRandomColor()
-        };
-      }
+  const filteredTimers = prepareTimers(props);
 
-      return {
-        ...timer,
-        color: getRandomColor(),
-        activitiesDuration: 0,
-        breaksDuration: 0
-      }
-    });
-
+  if (showStatistics(filteredTimers)) {
     return (
-      <Container {...props}>
-        <View style={{flex: 1, padding: 5, backgroundColor: colorSecondary}}>
-          <ScrollView>
-            <TimersPieChart data={data} navigation={props.navigation} t={props.screenProps.t} />
+      <View style={{flex: 1, padding: 5, backgroundColor: colorSecondary}}>
+        <ScrollView>
+          <TimersPieChart data={filteredTimers} navigation={props.navigation} t={props.screenProps.t} />
 
-            <TimersPieChart data={data} navigation={props.navigation} countBreaks t={props.screenProps.t} />
+          <TimersPieChart data={filteredTimers} navigation={props.navigation} countBreaks t={props.screenProps.t} />
 
-            <TagsDuration data={data} tags={props.data.tags} navigation={props.navigation} t={props.screenProps.t} />
+          <TagsDuration data={filteredTimers} tags={props.data.tags} navigation={props.navigation} t={props.screenProps.t} />
 
-            <TimersAndBreaks data={data} navigation={props.navigation} t={props.screenProps.t} />
-          </ScrollView>
-        </View>
-      </Container>
+          <TimersAndBreaks data={filteredTimers} navigation={props.navigation} t={props.screenProps.t} />
+        </ScrollView>
+      </View>
     );
   }
 
   return (
-    <Container {...props}>
-      <View style={{padding: 5}}>
-        <Tooltip text={props.screenProps.t(`tooltips.creation.TimerCreator`)}/>
-      </View>
-    </Container>
+    <View style={{padding: 5}}>
+      <Tooltip text={props.screenProps.t(`tooltips.creation.TimerCreator`)}/>
+    </View>
   );
 };
 
@@ -84,6 +111,4 @@ Statistics.propTypes = {
   })
 };
 
-export default connect((state, ownProps) => ({
-  data: state.data
-}), { })(Statistics);
+export default Statistics;

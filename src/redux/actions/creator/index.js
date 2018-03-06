@@ -3,6 +3,7 @@ import { AsyncStorage } from "react-native";
 import _ from "lodash";
 
 import Toast from "src/reusables/toast";
+import getRandomColor from "src/reusables/randomColor";
 
 export const updateCreator = (mode, data, onSuccess = () => {}) => {
   return (dispatch, getState) => {
@@ -41,7 +42,8 @@ export const finishCreation = (mode, props) => {
     currentState.data[dictionary[mode]].push({
       ...currentState.creator[mode],
       id,
-      created: Math.round(new Date().getTime() / 1000)
+      created: Math.round(new Date().getTime() / 1000),
+      color: getRandomColor()
     });
 
     AsyncStorage.setItem("procastrinationAppData", JSON.stringify(currentState.data)).then(whatever => {

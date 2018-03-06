@@ -15,7 +15,7 @@ import TagDetails from "src/components/Data/Details/Tag/index";
 import BreakDetails from "src/components/Data/Details/Break/index";
 import Creator from 'src/components/Creator/index';
 import Options from 'src/components/Options/index';
-import Statistics from 'src/components/Statistics/index';
+import Statistics from 'src/components/Statistics/Tabs';
 import List from "src/components/Data/List/index";
 import Start from "src/components/Start/index";
 import Calendar from "src/components/Calendar/index";
@@ -55,7 +55,6 @@ const Navigator = StackNavigator({
       screen: TagDetails
     }
   }, {
-    initialRouteName: 'Start',
     navigationOptions: {
       header: null
     }
@@ -88,7 +87,7 @@ class NavigatorWithTranslate extends React.Component {
     navigate: PropTypes.func.isRequired,
     t: PropTypes.func.isRequired
   };
-  
+
   componentDidMount() {
     i18n.changeLanguage(this.props.options.lang);
     SplashScreen.hide();

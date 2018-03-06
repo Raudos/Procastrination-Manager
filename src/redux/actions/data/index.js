@@ -2,6 +2,7 @@ import { AsyncStorage } from "react-native";
 import DummyData from "src/config/dummyData";
 
 import Toast from "src/reusables/toast";
+import getRandomColor from "src/reusables/randomColor";
 
 export const deleteAllData = () => {
   return (dispatch, getState) => {
@@ -56,6 +57,12 @@ export const changeOptions = (option, onSuccess = () => {}) => {
 export const resetToDefault = () => {
   return (dispatch, getState) => {
     AsyncStorage.setItem("procastrinationAppData", JSON.stringify(DummyData)).then(whatever => {
+      // TODO Decide if color creation/edit is a good idea
+      DummyData.timers = DummyData.timers.map(timer => ({
+        ...timer,
+        color: getRandomColor()
+      }));
+
       dispatch({
         type: "initialLoad",
         data: {
@@ -172,15 +179,28 @@ export const initialSetup = () => {
   return (dispatch, getState) => {
     AsyncStorage.getItem("procastrinationAppData").then(data => {
       if (data) {
+        const parsedData = JSON.parse(data);
+        // TODO Decide if color creation/edit is a good idea
+        parsedData.timers = parsedData.timers.map(timer => ({
+          ...timer,
+          color: getRandomColor()
+        }));
+
         dispatch({
           type: "initialLoad",
           data: {
-            data: JSON.parse(data),
+            data: parsedData,
             mode: "existing"
           }
         });
       } else {
         AsyncStorage.setItem("procastrinationAppData", JSON.stringify(DummyData)).then(whatever => {
+          // TODO Decide if color creation/edit is a good idea
+          DummyData.timers = DummyData.timers.map(timer => ({
+            ...timer,
+            color: getRandomColor()
+          }));
+
           dispatch({
             type: "initialLoad",
             data: {
